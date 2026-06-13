@@ -1,168 +1,126 @@
-// ===================================================
-//  AHMAD MIFTAHUDDIN — PORTFOLIO
-//  script.js — Interactions & Animations
-// ===================================================
-
 (function () {
   'use strict';
 
-  /* ---- Navbar scroll effect ---- */
+  /* ---- Navbar scroll ---- */
   const navbar = document.getElementById('navbar');
-  function onScroll() {
-    if (window.scrollY > 50) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
-    toggleBackToTop();
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
+  const backToTop = document.getElementById('backToTop');
 
-  /* ---- Mobile hamburger menu ---- */
+  window.addEventListener('scroll', function () {
+    const y = window.scrollY;
+    navbar.classList.toggle('scrolled', y > 40);
+    backToTop.classList.toggle('visible', y > 400);
+  }, { passive: true });
+
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  /* ---- Mobile menu ---- */
   const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
 
-  // Create mobile menu
-  const mobileMenu = document.createElement('div');
-  mobileMenu.className = 'mobile-menu';
-  mobileMenu.innerHTML = `
-    <a href="#about"   onclick="closeMobileMenu()">About</a>
-    <a href="#projects" onclick="closeMobileMenu()">Projects</a>
-    <a href="#skills"  onclick="closeMobileMenu()">Skills</a>
-    <a href="#timeline" onclick="closeMobileMenu()">Journey</a>
-    <a href="#contact" onclick="closeMobileMenu()">Contact</a>
-  `;
-  document.body.appendChild(mobileMenu);
+  hamburger.addEventListener('click', function () {
+    const open = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('active', open);
+  });
 
   window.closeMobileMenu = function () {
     mobileMenu.classList.remove('open');
     hamburger.classList.remove('active');
   };
 
-  hamburger.addEventListener('click', function () {
-    mobileMenu.classList.toggle('open');
-    hamburger.classList.toggle('active');
-  });
-
-  /* ---- Back to top ---- */
-  const backToTop = document.getElementById('backToTop');
-  function toggleBackToTop() {
-    if (window.scrollY > 400) {
-      backToTop.classList.add('visible');
-    } else {
-      backToTop.classList.remove('visible');
-    }
-  }
-  backToTop.addEventListener('click', function () {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  /* Hamburger animation */
+  const style = document.createElement('style');
+  style.textContent = `
+    .hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .hamburger.active span:nth-child(2){opacity:0}
+    .hamburger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  `;
+  document.head.appendChild(style);
 
   /* ---- Scroll reveal ---- */
-  const revealEls = document.querySelectorAll(
-    '.about-grid, .project-polaroid, .skill-cluster, .timeline-card, .contact-board, .section-header'
+  const targets = document.querySelectorAll(
+    '.about-grid, .project-row, .section-title-center, .section-line, .contact-grid, .about-service'
   );
 
-  revealEls.forEach(function (el, i) {
+  targets.forEach((el, i) => {
     el.classList.add('reveal');
-    // stagger children slightly
-    if (i % 3 === 1) el.classList.add('reveal-delay-1');
-    if (i % 3 === 2) el.classList.add('reveal-delay-2');
+    if (i % 3 === 1) el.classList.add('reveal-d1');
+    if (i % 3 === 2) el.classList.add('reveal-d2');
   });
 
-  const observer = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
-  );
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-  revealEls.forEach(function (el) { observer.observe(el); });
+  targets.forEach(el => io.observe(el));
 
-  /* ---- Active nav link highlight ---- */
+  /* ---- Active nav ---- */
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-links a');
 
-  const sectionObserver = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          navLinks.forEach(function (link) {
-            link.style.background = '';
-            link.style.color = '';
-            if (link.getAttribute('href') === '#' + id) {
-              link.style.background = 'rgba(255,255,255,0.15)';
-              link.style.color = '#fff';
-            }
-          });
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-
-  sections.forEach(function (s) { sectionObserver.observe(s); });
-
-  /* ---- Polaroid tilt on mousemove ---- */
-  document.querySelectorAll('.project-polaroid').forEach(function (card) {
-    card.addEventListener('mousemove', function (e) {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      card.style.transform = `rotate(0deg) scale(1.04) rotateY(${x * 6}deg) rotateX(${-y * 4}deg)`;
-    });
-    card.addEventListener('mouseleave', function () {
-      card.style.transform = '';
-    });
-  });
-
-  /* ---- Sticky notes slight parallax ---- */
-  const stickies = document.querySelectorAll('.sticky-float');
-  window.addEventListener('scroll', function () {
-    const scrollY = window.scrollY;
-    stickies.forEach(function (el, i) {
-      const speed = 0.04 + i * 0.02;
-      el.style.transform = el.style.transform.replace(/translateY\([^)]+\)/g, '') +
-        ` translateY(${scrollY * speed}px)`;
-    });
-  }, { passive: true });
-
-  /* ---- Skill tag hover colors ---- */
-  document.querySelectorAll('.skill-tag').forEach(function (tag) {
-    tag.addEventListener('mouseenter', function () {
-      tag.style.opacity = '0.85';
-    });
-    tag.addEventListener('mouseleave', function () {
-      tag.style.opacity = '';
-    });
-  });
-
-  /* ---- Typed greeting effect in hero ---- */
-  const greeting = document.querySelector('.hero-greeting');
-  if (greeting) {
-    const text = greeting.textContent;
-    greeting.textContent = '';
-    greeting.style.opacity = '1';
-    let i = 0;
-    setTimeout(function type() {
-      if (i < text.length) {
-        greeting.textContent += text[i++];
-        setTimeout(type, 60);
+  const sio = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        navLinks.forEach(a => {
+          const active = a.getAttribute('href') === '#' + id;
+          a.style.color = active ? 'var(--text)' : '';
+          a.style.background = active ? 'rgba(255,255,255,0.06)' : '';
+        });
       }
-    }, 600);
-  }
+    });
+  }, { threshold: 0.5 });
 
-  /* ---- Hamburger animation ---- */
-  const style = document.createElement('style');
-  style.textContent = `
-    .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.active span:nth-child(2) { opacity: 0; }
-    .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  `;
-  document.head.appendChild(style);
+  sections.forEach(s => sio.observe(s));
+
+  /* ---- Contact form ---- */
+  window.handleSubmit = function () {
+    const name  = document.getElementById('cName').value.trim();
+    const email = document.getElementById('cEmail').value.trim();
+    const msg   = document.getElementById('cMsg').value.trim();
+    const note  = document.getElementById('formNote');
+    const btn   = document.getElementById('sendBtn');
+
+    if (!name || !email || !msg) {
+      note.textContent = 'Please fill in all fields.';
+      note.style.color = '#FF8A82';
+      return;
+    }
+
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      note.textContent = 'Thanks! Message received. I\'ll get back to you soon.';
+      note.style.color = '#4ADE80';
+      btn.textContent = 'Submit';
+      btn.disabled = false;
+      document.getElementById('cName').value = '';
+      document.getElementById('cEmail').value = '';
+      document.getElementById('cMsg').value = '';
+    }, 1200);
+  };
+
+  /* ---- Hero typed greeting ---- */
+  const hello = document.querySelector('.hero-hello');
+  if (hello) {
+    const full = hello.innerHTML;
+    hello.innerHTML = '';
+    hello.style.opacity = '1';
+    const plain = 'Hello';
+    let i = 0;
+    const type = () => {
+      if (i < plain.length) {
+        hello.innerHTML = plain.slice(0, ++i) + (i === plain.length ? '<span class="dot-red">.</span>' : '');
+        setTimeout(type, 80);
+      }
+    };
+    setTimeout(type, 500);
+    void full; // suppress unused warning
+  }
 
 })();
