@@ -14,7 +14,7 @@
   <!-- ===== NAV ===== -->
   <nav class="nav" id="navbar">
     <div class="nav-inner">
-      <div class="nav-logo">Ahmad<span class="logo-dot">.</span></div>
+      <div class="nav-logo">Ahmad Miftahuddin Al Awwaly<span class="logo-dot">.</span></div>
       <ul class="nav-links">
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
@@ -38,13 +38,6 @@
   <!-- ===== HERO ===== -->
   <section class="hero" id="home">
     <!-- Decorative arrows / shapes -->
-    <div class="hero-deco deco-arrow-1">
-      <svg viewBox="0 0 60 60" fill="none"><path d="M10 50 L50 10 M30 10 L50 10 L50 30" stroke="#E63C2F" stroke-width="3" stroke-linecap="round"/></svg>
-    </div>
-    <div class="hero-deco deco-arrow-2">
-      <svg viewBox="0 0 60 60" fill="none"><path d="M50 10 L10 50 M30 50 L10 50 L10 30" stroke="#E63C2F" stroke-width="3" stroke-linecap="round"/></svg>
-    </div>
-    <div class="hero-deco deco-circle"></div>
 
     <div class="hero-content">
       <div class="hero-text">
@@ -60,13 +53,9 @@
       <div class="hero-visual">
         <div class="hero-avatar-ring">
           <div class="hero-avatar-inner">
-            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="100" cy="200" r="200" fill="#1E293B"/>
-              <circle cx="100" cy="78" r="42" fill="#334155"/>
-              <ellipse cx="100" cy="185" rx="72" ry="45" fill="#334155"/>
-              <text x="100" y="84" text-anchor="middle" fill="#94A3B8" font-size="13" font-family="Inter">Ahmad</text>
-            </svg>
+            <img src="img/avatar.jpg" alt="Ahmad" class="hero-avatar-img" />
           </div>
+
         </div>
       </div>
     </div>
@@ -159,43 +148,18 @@
           </p>
           <div class="proj-links">
             <a href="https://github.com/Mip-co/DuTrack" target="_blank" class="btn btn-primary btn-sm">View Github</a>
-            <a href="https://github.com/Mip-co/DuTrack" target="_blank" class="proj-view-link">View project ↗</a>
+            <a href="https://dutrack.vercel.app/" target="_blank" class="proj-view-link">View project ↗</a>
           </div>
         </div>
-        <div class="project-visual">
-          <div class="code-block">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <pre><code><span class="c-comment">// DuTrack - OCR Receipt Scanner</span>
-<span class="c-kw">const</span> <span class="c-var">scanner</span> = <span class="c-kw">new</span> <span class="c-fn">Tesseract</span>();
-
-<span class="c-kw">async function</span> <span class="c-fn">scanReceipt</span>(image) {
-  <span class="c-kw">const</span> { data } = <span class="c-kw">await</span> scanner
-    .<span class="c-fn">recognize</span>(image, <span class="c-str">'ind'</span>);
-  <span class="c-kw">return</span> <span class="c-fn">parseAmount</span>(data.text);
-}
-
-<span class="c-comment">// Auto-generate LPJ report</span>
-<span class="c-fn">exportToPDF</span>(transactions, template);</code></pre>
-          </div>
+        <div class="project-visual project-image-card">
+          <img src="img/dutrack.jpg" alt="DuTrack project screenshot" />
         </div>
       </div>
 
       <!-- Project 2: SoalIn -->
       <div class="project-row project-row-reverse">
-        <div class="project-visual">
-          <div class="code-block">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <pre><code><span class="c-comment">// SoalIn - AI Question Generator</span>
-<span class="c-kw">const</span> <span class="c-fn">generateQuestions</span> = <span class="c-kw">async</span> (
-  material, count, type
-) => {
-  <span class="c-kw">const</span> res = <span class="c-kw">await</span> <span class="c-fn">gemini</span>.generate({
-    prompt: <span class="c-fn">buildPrompt</span>(material),
-    model: <span class="c-str">'gemini-pro'</span>
-  });
-  <span class="c-kw">return</span> <span class="c-fn">parseQuestions</span>(res.text);
-};</code></pre>
-          </div>
+        <div class="project-visual project-image-card">
+          <img src="img/soalin.jpg" alt="SoalIn project screenshot" />
         </div>
         <div class="project-info">
           <h3 class="proj-title">SoalIn</h3>
@@ -227,46 +191,15 @@
             <a href="https://github.com/Mip-co/UAS-DEVOPS-AcilTechSolutions" target="_blank" class="proj-view-link">View project ↗</a>
           </div>
         </div>
-        <div class="project-visual">
-          <div class="code-block">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <pre><code><span class="c-comment"># .github/workflows/deploy.yml</span>
-<span class="c-kw">on:</span>
-  push:
-    branches: [main]
-
-<span class="c-kw">jobs:</span>
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - <span class="c-fn">uses:</span> actions/checkout@v3
-      - <span class="c-kw">name:</span> Deploy to Server
-        <span class="c-kw">run:</span> |
-          <span class="c-fn">ssh</span> server <span class="c-str">"cd /app && \
-          git pull && nginx -s reload"</span></code></pre>
-          </div>
+        <div class="project-visual project-image-card">
+          <img src="img/devops.jpg" alt="Automated Deployment Pipeline screenshot" />
         </div>
       </div>
 
       <!-- Project 4: CoreDev -->
       <div class="project-row project-row-reverse">
-        <div class="project-visual proj-screenshot">
-          <div class="screenshot-card">
-            <div class="screenshot-bar">
-              <span class="sb-dot"></span><span class="sb-dot"></span><span class="sb-dot"></span>
-              <span class="sb-url">localhost:5173/coredev</span>
-            </div>
-            <div class="screenshot-body">
-              <div class="ss-nav">CoreDev Solution</div>
-              <div class="ss-content">
-                <div class="ss-tag">Fullstack</div>
-                <div class="ss-tag accent">Team Project</div>
-                <div class="ss-text">React + MySQL</div>
-                <div class="ss-bar"></div>
-                <div class="ss-bar short"></div>
-              </div>
-            </div>
-          </div>
+        <div class="project-visual project-image-card">
+          <img src="img/coredev.jpg" alt="CoreDev Solution screenshot" />
         </div>
         <div class="project-info">
           <h3 class="proj-title">CoreDev Solution</h3>
